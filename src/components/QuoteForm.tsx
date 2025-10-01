@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -22,7 +23,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 const quoteSchema = z.object({
   companyName: z.string().min(1, "El nombre de la empresa es obligatorio"),
@@ -80,6 +87,7 @@ const features = [
 
 const QuoteForm = () => {
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
   
   const form = useForm<QuoteFormData>({
     resolver: zodResolver(quoteSchema),
@@ -123,12 +131,35 @@ const QuoteForm = () => {
   return (
     <section id="cotizacion" className="w-full py-20 px-6 bg-background">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl mb-6">Completa el formulario y recibe tu cotización personalizada en 24h</h2>
-          <p className="text-lg md:text-xl font-light text-foreground/80">
-            Mientras más detallada sea tu información, más preciso será el chatbot que diseñaremos para ti.
-          </p>
-        </div>
+        <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl mb-6">Obtén tu Cotización Personalizada</h2>
+            <p className="text-lg md:text-xl font-light text-foreground/80 mb-8">
+              Mientras más detallada sea tu información, más preciso será el chatbot que diseñaremos para ti.
+            </p>
+            
+            <CollapsibleTrigger asChild>
+              <Button 
+                variant="hero" 
+                size="lg"
+                className="text-base py-6 h-auto px-12"
+              >
+                {isOpen ? (
+                  <>
+                    Ocultar Formulario
+                    <ChevronUp className="ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Completar Formulario de Cotización
+                    <ChevronDown className="ml-2" />
+                  </>
+                )}
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+
+          <CollapsibleContent className="mt-8">
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
@@ -631,6 +662,8 @@ const QuoteForm = () => {
             </Button>
           </form>
         </Form>
+          </CollapsibleContent>
+        </Collapsible>
       </div>
     </section>
   );

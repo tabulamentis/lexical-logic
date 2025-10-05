@@ -2,7 +2,7 @@ import { MessageCircle, Settings, Zap, Rocket } from 'lucide-react';
 
 const HowItWorks = () => {
   return (
-    <section className="py-20 bg-white" id="como-funciona">
+    <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50" id="como-funciona">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -13,9 +13,13 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {/* Gradient line connecting the steps */}
+          <div className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2 hidden lg:block">
+            <div className="h-full bg-gradient-to-r from-orange-500 via-blue-500 to-orange-500"></div>
+          </div>
           {/* Paso 1 */}
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100 relative z-10">
             <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
               01
             </div>
@@ -31,7 +35,7 @@ const HowItWorks = () => {
           </div>
 
           {/* Paso 2 */}
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100 relative z-10">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
               02
             </div>
@@ -47,7 +51,7 @@ const HowItWorks = () => {
           </div>
 
           {/* Paso 3 */}
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100 relative z-10">
             <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
               03
             </div>
@@ -63,7 +67,7 @@ const HowItWorks = () => {
           </div>
 
           {/* Paso 4 */}
-          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100 relative z-10">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
               04
             </div>

@@ -137,7 +137,7 @@ const QuoteFormMultiStep = () => {
     setSubmitStatus('idle');
 
     const dataToSend = {
-      tipo: 'cotizacion_completa',
+      tipo: 'cotizacion',
       destinatario: 'tabulamantis@gmail.com',
       ...formData,
       fecha: new Date().toISOString(),

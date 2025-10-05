@@ -18,6 +18,7 @@ import { Loader2, Sparkles } from "lucide-react";
 const formSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres").max(100),
   email: z.string().email("Email inválido").max(255),
+  phone: z.string().min(8, "El teléfono debe tener al menos 8 dígitos").max(20),
   company: z.string().min(2, "El nombre de la empresa debe tener al menos 2 caracteres").max(100),
 });
 
@@ -32,6 +33,7 @@ const FinalCTA = () => {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
       company: "",
     },
   });
@@ -50,7 +52,7 @@ const FinalCTA = () => {
           nombre: data.name,
           email: data.email,
           empresa: data.company,
-          telefono: "",
+          telefono: data.phone,
           mensaje: "Solicitud de Demo Gratis",
           fecha: new Date().toISOString(),
           origen: "Website Lexical Logic - Demo CTA",
@@ -131,6 +133,25 @@ const FinalCTA = () => {
                       <Input
                         type="email"
                         placeholder="tu@email.com"
+                        {...field}
+                        className="h-12 text-base border-2 focus:border-primary"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#1F2937] font-semibold">Teléfono</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="tel"
+                        placeholder="+58 412-1234567"
                         {...field}
                         className="h-12 text-base border-2 focus:border-primary"
                       />

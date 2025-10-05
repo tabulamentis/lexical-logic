@@ -19,17 +19,63 @@ const Hero = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleContact = () => {
+  const handleContact = (e: React.MouseEvent) => {
+    e.preventDefault();
     const ctaSection = document.getElementById('cta-final');
     if (ctaSection) {
-      ctaSection.scrollIntoView({ behavior: 'smooth' });
+      // For better mobile support, we'll use scrollTo with a polyfill-like approach
+      const start = window.pageYOffset;
+      const target = ctaSection.getBoundingClientRect().top + window.pageYOffset;
+      const distance = target - start;
+      const duration = 800;
+      let startTime: number | null = null;
+
+      function animation(currentTime: number) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = easeInOutCubic(timeElapsed, start, distance, duration);
+        window.scrollTo(0, run);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+      }
+
+      function easeInOutCubic(t: number, b: number, c: number, d: number): number {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+      }
+
+      requestAnimationFrame(animation);
     }
   };
 
-  const handleDemo = () => {
+  const handleDemo = (e: React.MouseEvent) => {
+    e.preventDefault();
     const demoSection = document.getElementById('como-funciona');
     if (demoSection) {
-      demoSection.scrollIntoView({ behavior: 'smooth' });
+      // For better mobile support, we'll use scrollTo with a polyfill-like approach
+      const start = window.pageYOffset;
+      const target = demoSection.getBoundingClientRect().top + window.pageYOffset;
+      const distance = target - start;
+      const duration = 800;
+      let startTime: number | null = null;
+
+      function animation(currentTime: number) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const run = easeInOutCubic(timeElapsed, start, distance, duration);
+        window.scrollTo(0, run);
+        if (timeElapsed < duration) requestAnimationFrame(animation);
+      }
+
+      function easeInOutCubic(t: number, b: number, c: number, d: number): number {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+      }
+
+      requestAnimationFrame(animation);
     }
   };
 

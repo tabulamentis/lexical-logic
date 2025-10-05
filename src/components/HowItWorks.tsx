@@ -14,21 +14,19 @@ const HowItWorks = () => {
         </div>
 
         <div className="relative">
-          {/* Línea degradada horizontal */}
           <div className="absolute top-[80px] left-0 right-0 h-1 hidden lg:block z-0">
-            <div className="h-full bg-gradient-to-r from-orange-500 via-blue-500 to-orange-500"></div>
+            <div className="h-full" style={{ background: 'linear-gradient(to right, #F97316, #3B82F6, #F97316)' }}></div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
             
-            {/* Paso 1 */}
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10" style={{ background: 'linear-gradient(to bottom right, #F97316, #3B82F6)' }}>
                 <span className="text-white text-2xl font-bold">01</span>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow h-full">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <MessageCircle className="w-8 h-8 text-orange-500" strokeWidth={2} />
+                  <MessageCircle className="w-8 h-8" style={{ color: '#F97316' }} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   CONTÁCTANOS
@@ -39,14 +37,13 @@ const HowItWorks = () => {
               </div>
             </div>
 
-            {/* Paso 2 */}
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10" style={{ background: 'linear-gradient(to bottom right, #F97316, #3B82F6)' }}>
                 <span className="text-white text-2xl font-bold">02</span>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow h-full">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <Settings className="w-8 h-8 text-blue-500" strokeWidth={2} />
+                  <Settings className="w-8 h-8" style={{ color: '#3B82F6' }} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   PERSONALIZAMOS TU BOT
@@ -57,14 +54,13 @@ const HowItWorks = () => {
               </div>
             </div>
 
-            {/* Paso 3 */}
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10" style={{ background: 'linear-gradient(to bottom right, #F97316, #3B82F6)' }}>
                 <span className="text-white text-2xl font-bold">03</span>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow h-full">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <Zap className="w-8 h-8 text-orange-500" strokeWidth={2} />
+                  <Zap className="w-8 h-8" style={{ color: '#F97316' }} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   INTEGRACIÓN
@@ -75,14 +71,13 @@ const HowItWorks = () => {
               </div>
             </div>
 
-            {/* Paso 4 */}
             <div className="text-center relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg relative z-10" style={{ background: 'linear-gradient(to bottom right, #F97316, #3B82F6)' }}>
                 <span className="text-white text-2xl font-bold">04</span>
               </div>
               <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow h-full">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                  <Rocket className="w-8 h-8 text-blue-500" strokeWidth={2} />
+                  <Rocket className="w-8 h-8" style={{ color: '#3B82F6' }} strokeWidth={2} />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   ¡LISTO PARA FUNCIONAR!

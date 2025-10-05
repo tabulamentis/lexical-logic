@@ -157,7 +157,6 @@ All colors MUST be HSL.
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 0.025em;
   }
 
   .gradient-text {
@@ -168,4 +167,38 @@ All colors MUST be HSL.
   .glass-card {
     @apply backdrop-blur-sm bg-white/10 border border-white/20;
   }
+  
+  /* Force remove any background from HowItWorks section */
+  #como-funciona {
+    background-image: none !important;
+    background-color: #ffffff !important;
+  }
+  
+  #como-funciona .backdrop-blur-sm,
+  #como-funciona .backdrop-blur {
+    display: none !important;
+  }
+
+/* Hard override to ensure the HowItWorks section has no background image */
+#como-funciona {
+  background-image: none !important;
+  background-color: #ffffff !important;
+}
+
+#como-funciona .backdrop-blur-sm {
+  display: none !important;
+}
+
+/* Ensure text is readable if an older version with white text is rendered */
+# como-funciona h2,
+# como-funciona h3 {
+  color: #111827 !important; /* gray-900 */
+}
+
+# como-funciona p {
+  color: #374151 !important; /* gray-700 */
+}
+
+# como-funciona .overlay {
+  display: none !important;
 }

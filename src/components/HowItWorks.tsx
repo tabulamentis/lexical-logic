@@ -1,105 +1,82 @@
-import { Plug, Brain, Settings, Rocket, MessageSquare, Zap } from "lucide-react";
-
-const steps = [
-  {
-    number: "01",
-    title: "Contáctanos",
-    description: "Agenda una reunión para conocer tus necesidades",
-    icon: MessageSquare,
-    iconColor: "text-[#F97316]",
-  },
-  {
-    number: "02",
-    title: "Personalizamos tu bot",
-    description: "Configuramos el chatbot con tu información y tono de marca",
-    icon: Settings,
-    iconColor: "text-[#3B82F6]",
-  },
-  {
-    number: "03",
-    title: "Integración",
-    description: "Conectamos el bot con tus plataformas en minutos",
-    icon: Zap,
-    iconColor: "text-[#F97316]",
-  },
-  {
-    number: "04",
-    title: "¡Listo para funcionar!",
-    description: "Tu asistente IA trabaja 24/7 por ti",
-    icon: Rocket,
-    iconColor: "text-[#3B82F6]",
-  },
-];
+import { MessageCircle, Settings, Zap, Rocket } from 'lucide-react';
 
 const HowItWorks = () => {
   return (
-    <section id="como-funciona" className="relative w-full py-24 px-8 lg:px-16 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(/images/presentaciones-1.png)' }}>
-      {/* Overlay para mejor legibilidad */}
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-3xl md:text-5xl mb-4 text-white font-bold drop-shadow-lg">¿CÓMO FUNCIONA?</h2>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium">
+    <section className="py-20 bg-white" id="como-funciona">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            ¿Cómo Funciona?
+          </h2>
+          <p className="text-xl text-gray-600">
             Implementación simple en 4 pasos
           </p>
         </div>
 
-        {/* Desktop Timeline */}
-        <div className="hidden md:block relative">
-          {/* Connector Line */}
-          <div className="absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-[#F97316] via-[#3B82F6] to-[#F97316]"></div>
-
-          <div className="grid grid-cols-4 gap-8 relative">
-            {steps.map((step, index) => (
-              <div 
-                key={step.number} 
-                className="flex flex-col items-center text-center animate-fade-up"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                {/* Number */}
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#F97316] to-[#3B82F6] flex items-center justify-center mb-6 text-2xl font-bold text-white shadow-lg relative z-10">
-                  {step.number}
-                </div>
-
-                {/* Icon */}
-                <div className={`mb-4 ${step.iconColor}`}>
-                  <step.icon size={40} strokeWidth={1.5} />
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-bold mb-3 text-white drop-shadow-md">{step.title}</h3>
-                <p className="text-white/90 leading-relaxed font-medium">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile Timeline */}
-        <div className="md:hidden space-y-8">
-          {steps.map((step, index) => (
-            <div 
-              key={step.number}
-              className="flex gap-6 items-start animate-fade-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Left side - Number */}
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#F97316] to-[#3B82F6] flex items-center justify-center text-xl font-bold text-white shadow-lg">
-                  {step.number}
-                </div>
-              </div>
-
-              {/* Right side - Content */}
-              <div className="flex-1 pt-2">
-                <div className={`mb-3 ${step.iconColor}`}>
-                  <step.icon size={32} strokeWidth={1.5} />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-gray-900">{step.title}</h3>
-                <p className="text-gray-700 leading-relaxed">{step.description}</p>
-              </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Paso 1 */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
+              01
             </div>
-          ))}
+            <div className="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <MessageCircle className="w-7 h-7 text-orange-500" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+              Contáctanos
+            </h3>
+            <p className="text-gray-600 text-center">
+              Agenda una reunión para conocer tus necesidades
+            </p>
+          </div>
+
+          {/* Paso 2 */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
+              02
+            </div>
+            <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <Settings className="w-7 h-7 text-blue-500" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+              Personalizamos tu Bot
+            </h3>
+            <p className="text-gray-600 text-center">
+              Configuramos el chatbot con tu información y tono de marca
+            </p>
+          </div>
+
+          {/* Paso 3 */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
+              03
+            </div>
+            <div className="w-14 h-14 bg-orange-50 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <Zap className="w-7 h-7 text-orange-500" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+              Integración
+            </h3>
+            <p className="text-gray-600 text-center">
+              Conectamos el bot con tus plataformas en minutos
+            </p>
+          </div>
+
+          {/* Paso 4 */}
+          <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full border border-gray-100">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto text-2xl font-bold text-white">
+              04
+            </div>
+            <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-4 mx-auto">
+              <Rocket className="w-7 h-7 text-blue-500" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+              ¡Listo para Funcionar!
+            </h3>
+            <p className="text-gray-600 text-center">
+              Tu asistente IA trabaja 24/7 por ti
+            </p>
+          </div>
         </div>
       </div>
     </section>

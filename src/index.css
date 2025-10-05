@@ -167,9 +167,3 @@ All colors MUST be HSL.
     @apply backdrop-blur-sm bg-white/10 border border-white/20;
   }
 }
-  
-  /* Force remove any background from HowItWorks section */
-  #como-funciona {
-    background-image: none !important;
-    background-color: #ffffff !important;
-  }

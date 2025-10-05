@@ -33,20 +33,14 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section id="como-funciona" className="relative w-full py-24 px-8 lg:px-16 bg-[#F8FAFC]">
-      {/* Background decorativo */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-5">
-        <img 
-          src="/images/presentaciones-1.png"
-          alt="" 
-          className="w-full max-w-2xl"
-        />
-      </div>
+    <section id="como-funciona" className="relative w-full py-24 px-8 lg:px-16 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(/images/presentaciones-1.png)' }}>
+      {/* Overlay para mejor legibilidad */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-3xl md:text-5xl mb-4 text-[#1F2937]">¿CÓMO FUNCIONA?</h2>
-          <p className="text-lg md:text-xl text-[#64748B] max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-5xl mb-4 text-white font-bold drop-shadow-lg">¿CÓMO FUNCIONA?</h2>
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-medium">
             Implementación simple en 4 pasos
           </p>
         </div>
@@ -74,8 +68,8 @@ const HowItWorks = () => {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold mb-3 text-gray-900">{step.title}</h3>
-                <p className="text-gray-700 leading-relaxed">{step.description}</p>
+                <h3 className="text-xl font-bold mb-3 text-white drop-shadow-md">{step.title}</h3>
+                <p className="text-white/90 leading-relaxed font-medium">{step.description}</p>
               </div>
             ))}
           </div>

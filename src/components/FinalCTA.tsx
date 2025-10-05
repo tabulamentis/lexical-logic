@@ -40,18 +40,37 @@ const FinalCTA = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate API call - replace with actual edge function call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      console.log("Demo request:", data);
-      
-      toast({
-        title: "¡Solicitud enviada!",
-        description: "Nos pondremos en contacto contigo pronto para agendar tu demo personalizada.",
+      // Enviar datos al webhook de N8N
+      const response = await fetch("https://n8n-n8n.n3v9pm.easypanel.host/webhook/eb48cc1a-701b-4bd7-8d33-9f9746ffb91a", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: data.name,
+          email: data.email,
+          empresa: data.company,
+          telefono: "",
+          mensaje: "Solicitud de Demo Gratis",
+          fecha: new Date().toISOString(),
+          origen: "Website Lexical Logic - Demo CTA",
+          tipo: "demo",
+          destinatario: "tabulamantis@gmail.com"
+        }),
       });
-      
-      form.reset();
+
+      if (response.ok) {
+        toast({
+          title: "¡Solicitud enviada!",
+          description: "Nos pondremos en contacto contigo pronto para agendar tu demo personalizada.",
+        });
+        
+        form.reset();
+      } else {
+        throw new Error("Error al enviar la solicitud");
+      }
     } catch (error) {
+      console.error("Error:", error);
       toast({
         title: "Error",
         description: "Hubo un problema al enviar tu solicitud. Por favor intenta de nuevo.",
@@ -63,7 +82,7 @@ const FinalCTA = () => {
   };
 
   return (
-    <section id="cta-final" className="w-full py-20 px-6 bg-gradient-to-br from-primary via-secondary to-primary relative overflow-hidden">
+    <section id="cta-final" className="w-full py-24 px-8 lg:px-16 bg-gradient-to-br from-[#F97316] via-[#3B82F6] to-[#F97316] relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
@@ -89,7 +108,7 @@ const FinalCTA = () => {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-dark font-semibold">Nombre completo</FormLabel>
+                    <FormLabel className="text-[#1F2937] font-semibold">Nombre completo</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Tu nombre"
@@ -107,7 +126,7 @@ const FinalCTA = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-dark font-semibold">Email</FormLabel>
+                    <FormLabel className="text-[#1F2937] font-semibold">Email</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -126,7 +145,7 @@ const FinalCTA = () => {
                 name="company"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-dark font-semibold">Empresa</FormLabel>
+                    <FormLabel className="text-[#1F2937] font-semibold">Empresa</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Nombre de tu empresa"
@@ -142,7 +161,7 @@ const FinalCTA = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-14 text-lg font-bold bg-dark hover:bg-dark/90 text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="w-full h-14 text-lg font-bold bg-[#0F172A] hover:bg-[#0F172A]/90 text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
               >
                 {isSubmitting ? (
                   <>
@@ -159,7 +178,7 @@ const FinalCTA = () => {
             </form>
           </Form>
 
-          <p className="text-center text-muted-foreground text-sm mt-6">
+          <p className="text-center text-[#64748B] text-sm mt-6">
             Sin tarjeta de crédito requerida • Respuesta en 24 horas
           </p>
         </div>

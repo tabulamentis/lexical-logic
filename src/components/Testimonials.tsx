@@ -1,37 +1,97 @@
+import { useState, useEffect, useRef } from "react";
 import { Clock, TrendingUp, Building2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const stats = [
   {
     icon: Clock,
-    number: "95%",
+    number: 95,
+    suffix: "%",
     label: "Reducción en tiempo de respuesta",
-    color: "text-primary",
-    bgColor: "bg-primary/10",
+    color: "text-[#F97316]",
+    bgColor: "bg-[#F97316]/10",
   },
   {
     icon: TrendingUp,
-    number: "3x",
+    number: 3,
+    suffix: "x",
     label: "Más conversiones",
-    color: "text-secondary",
-    bgColor: "bg-secondary/10",
+    color: "text-[#3B82F6]",
+    bgColor: "bg-[#3B82F6]/10",
   },
   {
     icon: Building2,
-    number: "+500",
+    number: 500,
+    prefix: "+",
+    suffix: "",
     label: "Empresas automatizadas",
-    color: "text-primary",
-    bgColor: "bg-primary/10",
+    color: "text-[#F97316]",
+    bgColor: "bg-[#F97316]/10",
   },
 ];
 
+const AnimatedCounter = ({ end, duration = 2000, prefix = "", suffix = "" }: { end: number; duration?: number; prefix?: string; suffix?: string }) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const counterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (counterRef.current) {
+      observer.observe(counterRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number;
+    let animationFrame: number;
+
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      
+      // Easing function para animación suave
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      setCount(Math.floor(easeOutQuart * end));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isVisible, end, duration]);
+
+  return (
+    <div ref={counterRef} className="text-6xl md:text-7xl font-black mb-6 bg-gradient-to-r from-[#F97316] to-[#3B82F6] bg-clip-text text-transparent">
+      {prefix}{count}{suffix}
+    </div>
+  );
+};
+
 const Testimonials = () => {
   return (
-    <section id="testimonios" className="w-full py-20 px-6 bg-muted/30">
-      <div className="max-w-7xl mx-auto">
+    <section id="testimonios" className="w-full py-24 px-8 lg:px-16 bg-gradient-to-br from-white via-[#F8FAFC] to-white relative overflow-hidden">
+      {/* Decorative gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#F97316]/5 via-transparent to-[#3B82F6]/5 pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-3xl md:text-5xl mb-6">RESULTADOS QUE HABLAN</h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl mb-6 text-[#1F2937] font-bold">RESULTADOS QUE HABLAN</h2>
+          <p className="text-lg md:text-xl text-[#64748B] max-w-3xl mx-auto">
             Impacto real en negocios como el tuyo
           </p>
         </div>
@@ -40,24 +100,23 @@ const Testimonials = () => {
           {stats.map((stat, index) => (
             <Card 
               key={stat.label}
-              className="group border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 animate-fade-up bg-card"
+              className="group border border-[#E2E8F0] hover:border-primary/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 rounded-xl animate-fade-up bg-white"
               style={{ animationDelay: `${index * 0.15}s` }}
             >
-              <CardContent className="p-8 text-center">
+              <CardContent className="p-10 text-center">
                 <div className={`inline-flex p-4 ${stat.bgColor} rounded-lg mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <stat.icon size={40} className={stat.color} strokeWidth={1.5} />
                 </div>
                 
-                <div className={`text-5xl md:text-6xl font-black mb-4 ${stat.color}`}>
-                  {stat.number}
-                </div>
-                
-                <p className="text-lg text-muted-foreground font-medium">
+                <AnimatedCounter 
+                  end={stat.number} 
+                  prefix={stat.prefix || ""} 
+                  suffix={stat.suffix || ""}
+                />
+
+                <p className="text-base text-gray-500 font-medium">
                   {stat.label}
                 </p>
-
-                {/* Decorative gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
               </CardContent>
             </Card>
           ))}

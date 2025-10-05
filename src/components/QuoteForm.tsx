@@ -88,6 +88,7 @@ const features = [
 const QuoteForm = () => {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<QuoteFormData>({
     resolver: zodResolver(quoteSchema),
@@ -116,16 +117,66 @@ const QuoteForm = () => {
     },
   });
 
-  const onSubmit = (data: QuoteFormData) => {
-    console.log("Formulario de cotización enviado:", data);
+  const onSubmit = async (data: QuoteFormData) => {
+    setIsSubmitting(true);
     
-    toast({
-      title: "¡Gracias!",
-      description: "Hemos recibido tu solicitud. Te enviaremos una cotización detallada en las próximas 24 horas.",
-      duration: 5000,
-    });
+    try {
+      const response = await fetch('https://n8n-n8n.n3v9pm.easypanel.host/webhook/eb48cc1a-701b-4bd7-8d33-9f9746ffb91a', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tipo: 'cotizacion',
+          destinatario: 'tabulamantis@gmail.com',
+          nombreEmpresa: data.companyName,
+          sitioWeb: data.website,
+          industria: data.industry,
+          tamanoEmpresa: data.companySize,
+          tiempoFuncionando: data.yearsInBusiness,
+          ubicacionPrincipal: data.location,
+          descripcionBreve: data.companyDescription,
+          plataformas: data.platforms,
+          volumenMensajes: data.messageVolume,
+          tipoChatbot: data.chatbotTypes,
+          funcionalidades: data.features,
+          nombreChatbot: data.chatbotName,
+          idiomaPrincipal: data.language,
+          tonoChatbot: data.tone,
+          mensajeBienvenida: data.welcomeMessage,
+          horarioInicio: data.scheduleStart,
+          horarioCierre: data.scheduleEnd,
+          mensajeHorario: data.offHoursMessage,
+          whatsappAgente: data.agentWhatsapp,
+          emailNotificaciones: data.notificationEmail,
+          emailCotizacion: data.clientEmail,
+          fecha: new Date().toISOString(),
+          origen: 'Website Lexical Logic - Formulario de Cotización'
+        }),
+      });
 
-    form.reset();
+      if (response.ok) {
+        toast({
+          title: "¡Cotización enviada con éxito!",
+          description: "Hemos recibido tu solicitud. Te enviaremos una cotización detallada en las próximas 24 horas.",
+          duration: 5000,
+        });
+        
+        form.reset();
+        setIsOpen(false);
+      } else {
+        throw new Error('Error al enviar la cotización');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error al enviar",
+        description: "Hubo un problema al enviar tu cotización. Por favor intenta de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -656,9 +707,20 @@ const QuoteForm = () => {
               type="submit" 
               variant="hero" 
               size="lg" 
+              disabled={isSubmitting}
               className="w-full text-base py-6 h-auto"
             >
-              Obtener Cotización
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Enviando...
+                </>
+              ) : (
+                'Obtener Cotización'
+              )}
             </Button>
           </form>
         </Form>

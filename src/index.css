@@ -173,11 +173,6 @@ All colors MUST be HSL.
     background-image: none !important;
     background-color: #ffffff !important;
   }
-  
-  #como-funciona .backdrop-blur-sm,
-  #como-funciona .backdrop-blur {
-    display: none !important;
-  }
 
 /* Hard override to ensure the HowItWorks section has no background image */
 #como-funciona {

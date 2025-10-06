@@ -50,7 +50,6 @@ const Hero = () => {
   };
 
   const handleContact = (e: React.MouseEvent) => scrollToSection(e, 'cta-final');
-  const handleHowItWorks = (e: React.MouseEvent) => scrollToSection(e, 'como-funciona');
 
 
   return (
@@ -91,21 +90,13 @@ const Hero = () => {
           {typedText}<span className="inline-block w-0.5 h-6 bg-[#F97316] ml-1 animate-pulse"></span>
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div className="flex justify-center">
           <Button 
             onClick={handleContact}
             className="text-base md:text-lg px-8 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg transition-all duration-300 group shadow-lg hover:shadow-xl"
           >
             Contáctanos
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-          </Button>
-          
-          <Button 
-            onClick={handleHowItWorks}
-            className="text-base md:text-lg px-8 py-3 border-2 border-[#F97316] text-[#F97316] hover:bg-[#F97316] hover:text-white rounded-lg transition-all duration-300"
-          >
-            <Play className="mr-2" size={20} />
-            Ver Cómo Funciona
           </Button>
         </div>
 

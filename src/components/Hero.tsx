@@ -19,13 +19,13 @@ const Hero = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleContact = (e: React.MouseEvent) => {
+  const scrollToSection = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
-    const ctaSection = document.getElementById('cta-final');
-    if (ctaSection) {
+    const section = document.getElementById(sectionId);
+    if (section) {
       // For better mobile support, we'll use scrollTo with a polyfill-like approach
       const start = window.pageYOffset;
-      const target = ctaSection.getBoundingClientRect().top + window.pageYOffset;
+      const target = section.getBoundingClientRect().top + window.pageYOffset;
       const distance = target - start;
       const duration = 800;
       let startTime: number | null = null;
@@ -49,35 +49,9 @@ const Hero = () => {
     }
   };
 
-  const handleDemo = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const demoSection = document.getElementById('como-funciona');
-    if (demoSection) {
-      // For better mobile support, we'll use scrollTo with a polyfill-like approach
-      const start = window.pageYOffset;
-      const target = demoSection.getBoundingClientRect().top + window.pageYOffset;
-      const distance = target - start;
-      const duration = 800;
-      let startTime: number | null = null;
+  const handleContact = (e: React.MouseEvent) => scrollToSection(e, 'cta-final');
+  const handleHowItWorks = (e: React.MouseEvent) => scrollToSection(e, 'como-funciona');
 
-      function animation(currentTime: number) {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const run = easeInOutCubic(timeElapsed, start, distance, duration);
-        window.scrollTo(0, run);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-      }
-
-      function easeInOutCubic(t: number, b: number, c: number, d: number): number {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t * t + b;
-        t -= 2;
-        return c / 2 * (t * t * t + 2) + b;
-      }
-
-      requestAnimationFrame(animation);
-    }
-  };
 
   return (
     <section id="hero" className="relative w-full min-h-[90vh] flex items-center justify-center px-8 lg:px-16 py-24 md:py-32 overflow-hidden bg-[#1E293B]">
@@ -120,15 +94,15 @@ const Hero = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button 
             onClick={handleContact}
-            className="text-base md:text-lg px-8 py-3 bg-[#F97316] hover:bg-[#EA580C] text-white rounded-lg transition-all duration-300 group shadow-lg hover:shadow-xl"
+            className="text-base md:text-lg px-8 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg transition-all duration-300 group shadow-lg hover:shadow-xl"
           >
-            Solicitar Demo
+            Contáctanos
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
           </Button>
           
           <Button 
-            onClick={handleDemo}
-            className="text-base md:text-lg px-8 py-3 border-2 border-[#3B82F6] text-[#3B82F6] hover:bg-[#3B82F6] hover:text-white rounded-lg transition-all duration-300"
+            onClick={handleHowItWorks}
+            className="text-base md:text-lg px-8 py-3 border-2 border-[#F97316] text-[#F97316] hover:bg-[#F97316] hover:text-white rounded-lg transition-all duration-300"
           >
             <Play className="mr-2" size={20} />
             Ver Cómo Funciona

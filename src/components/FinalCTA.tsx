@@ -1,85 +1,12 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles } from "lucide-react";
-
-const formSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres").max(100),
-  email: z.string().email("Email inválido").max(255),
-  phone: z.string().min(8, "El teléfono debe tener al menos 8 dígitos").max(20),
-  company: z.string().min(2, "El nombre de la empresa debe tener al menos 2 caracteres").max(100),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { ArrowRight, Sparkles } from "lucide-react";
 
 const FinalCTA = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-    },
-  });
-
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    
-    try {
-      // Enviar datos al webhook de N8N
-      const response = await fetch("https://n8n-n8n.n3v9pm.easypanel.host/webhook/eb48cc1a-701b-4bd7-8d33-9f9746ffb91a", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nombre: data.name,
-          email: data.email,
-          empresa: data.company,
-          telefono: data.phone,
-          mensaje: "Solicitud de Demo Gratis",
-          fecha: new Date().toISOString(),
-          origen: "Website Lexical Logic - Demo CTA",
-          tipo: "demo",
-          destinatario: "tabulamantis@gmail.com"
-        }),
-      });
-
-      if (response.ok) {
-        toast({
-          title: "¡Solicitud enviada!",
-          description: "Nos pondremos en contacto contigo pronto para agendar tu demo personalizada.",
-        });
-        
-        form.reset();
-      } else {
-        throw new Error("Error al enviar la solicitud");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: "Error",
-        description: "Hubo un problema al enviar tu solicitud. Por favor intenta de nuevo.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
+  const scrollToContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contacto');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -89,121 +16,31 @@ const FinalCTA = () => {
       <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-12 animate-fade-up">
-          <div className="inline-flex items-center gap-2 mb-4">
+      <div className="max-w-4xl mx-auto relative z-10 text-center">
+        <div className="mb-12 animate-fade-up">
+          <div className="inline-flex items-center justify-center gap-2 mb-6">
             <Sparkles className="text-white" size={32} />
           </div>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl mb-6 text-white">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl mb-6 text-white font-bold">
             ¿LISTO PARA AUTOMATIZAR TU NEGOCIO?
           </h2>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-            Únete a cientos de empresas que ya están transformando su atención al cliente
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed mb-8">
+            Únete a cientos de empresas que ya están transformando su atención al cliente con nuestras soluciones de IA
           </p>
+          
+          <Button 
+            onClick={scrollToContact}
+            className="text-lg px-8 py-6 bg-white text-[#3B82F6] hover:bg-gray-100 font-bold rounded-lg transition-all duration-300 group shadow-xl hover:shadow-2xl hover:scale-105"
+          >
+            Contáctanos Ahora
+            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+          </Button>
         </div>
-
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl p-8 md:p-12 shadow-2xl animate-scale-in">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[#1F2937] font-semibold">Nombre completo</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Tu nombre"
-                        {...field}
-                        className="h-12 text-base border-2 focus:border-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[#1F2937] font-semibold">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="tu@email.com"
-                        {...field}
-                        className="h-12 text-base border-2 focus:border-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[#1F2937] font-semibold">Teléfono</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="tel"
-                        placeholder="+58 412-1234567"
-                        {...field}
-                        className="h-12 text-base border-2 focus:border-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="company"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[#1F2937] font-semibold">Empresa</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Nombre de tu empresa"
-                        {...field}
-                        className="h-12 text-base border-2 focus:border-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full h-14 text-lg font-bold bg-[#0F172A] hover:bg-[#0F172A]/90 text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Enviando...
-                  </>
-                ) : (
-                  <>
-                    Solicitar Demo Gratis
-                    <Sparkles className="ml-2 h-5 w-5" />
-                  </>
-                )}
-              </Button>
-            </form>
-          </Form>
 
           <p className="text-center text-[#64748B] text-sm mt-6">
             Sin tarjeta de crédito requerida • Respuesta en 24 horas
           </p>
         </div>
-      </div>
     </section>
   );
 };

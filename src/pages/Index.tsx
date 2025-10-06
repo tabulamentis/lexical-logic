@@ -6,8 +6,6 @@ import UseCases from "@/components/UseCases";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import QuoteFormSection from "@/components/QuoteFormSection";
-import FinalCTA from "@/components/FinalCTA";
-import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -23,8 +21,6 @@ const Index = () => {
         <Testimonials />
         <FAQ />
         <QuoteFormSection />
-        <FinalCTA />
-        <ContactForm />
       </main>
       <Footer />
       <WhatsAppButton />

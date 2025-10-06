@@ -90,7 +90,7 @@ const Hero = () => {
           {typedText}<span className="inline-block w-0.5 h-6 bg-[#F97316] ml-1 animate-pulse"></span>
         </p>
 
-        <div className="flex justify-center">
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button 
             onClick={handleContact}
             className="text-base md:text-lg px-8 py-3 bg-[#3B82F6] hover:bg-[#2563EB] text-white rounded-lg transition-all duration-300 group shadow-lg hover:shadow-xl"
@@ -98,6 +98,13 @@ const Hero = () => {
             Contáctanos
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
           </Button>
+          <a
+            href="#como-funciona"
+            className="inline-flex items-center justify-center gap-2 bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 hover:scale-105 text-base md:text-lg shadow-lg hover:shadow-xl"
+          >
+            <Play className="w-5 h-5" />
+            Ver Cómo Funciona
+          </a>
         </div>
 
         {/* Decorative Elements */}

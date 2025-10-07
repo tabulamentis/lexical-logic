@@ -73,7 +73,7 @@ const Navbar = () => {
     { label: "Servicios", id: "servicios", type: "scroll" },
     { label: "Beneficios", id: "beneficios", type: "scroll" },
     { label: "Nosotros", path: "/nosotros", id: "quienes-somos", type: "link" },
-    { label: "Contacto", id: "contacto", type: "scroll" },
+    { label: "Contacto", id: "cta-final", type: "scroll" },
   ];
 
   const handleQuoteClick = () => {
@@ -142,7 +142,7 @@ const Navbar = () => {
             {/* Botón de Cotización */}
             <button
               onClick={handleQuoteClick}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50"
+              className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/50"
             >
               Cotización
             </button>
@@ -184,7 +184,7 @@ const Navbar = () => {
               {/* Botón de Cotización móvil */}
               <button
                 onClick={handleQuoteClick}
-                className="bg-[#F97316] hover:bg-[#EA580C] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl text-center mt-2"
+                className="bg-[#3B82F6] hover:bg-[#2563EB] text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-500/50 text-center mt-2"
               >
                 Cotización
               </button>

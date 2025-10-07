@@ -100,7 +100,7 @@ const Hero = () => {
           </Button>
           <a
             href="#como-funciona"
-            className="inline-flex items-center justify-center gap-2 bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 hover:scale-105 text-base md:text-lg shadow-lg hover:shadow-xl"
+            className="inline-flex items-center justify-center gap-2 bg-[#F97316] text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-[#EA580C] hover:scale-105 text-base md:text-lg shadow-lg hover:shadow-xl"
           >
             <Play className="w-5 h-5" />
             Ver Cómo Funciona

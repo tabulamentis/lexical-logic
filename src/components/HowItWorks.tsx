@@ -4,14 +4,8 @@ const HowItWorks = () => {
   return (
     <section
       id="como-funciona"
-      className="relative py-24 bg-gradient-to-b from-white via-gray-100 to-white overflow-hidden"
+      className="relative py-24 bg-white overflow-hidden"
     >
-      {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-      </div>
-
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div className="text-center mb-20">
           <h2 className="text-4xl md:text-5xl font-black uppercase tracking-[0.35em] text-gray-900 mb-4">
@@ -23,56 +17,60 @@ const HowItWorks = () => {
         </div>
 
         <div className="relative">
-          {/* Línea conectora horizontal */}
-          <div className="hidden lg:block absolute top-[50px] left-[10%] right-[10%] h-1 bg-gradient-to-r from-orange-500 via-orange-400 to-blue-600 z-0"></div>
+          {/* Línea conectora NARANJA */}
+          <div className="hidden lg:block absolute top-[60px] left-0 right-0 h-[3px] bg-orange-500 z-0"></div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 relative z-10">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 relative z-10">
             {[
               {
                 number: "01",
                 title: "CONTÁCTANOS",
                 description: "Agenda una reunión para conocer tus necesidades",
-                icon: <MessageCircle className="w-10 h-10 text-orange-500" strokeWidth={2.5} />,
+                icon: <MessageCircle className="w-12 h-12 text-orange-500" strokeWidth={2} />,
+                circleColor: "bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600"
               },
               {
                 number: "02",
                 title: "PERSONALIZAMOS TU BOT",
                 description: "Configuramos el chatbot con tu información y tono de marca",
-                icon: <Settings className="w-10 h-10 text-blue-500" strokeWidth={2.5} />,
+                icon: <Settings className="w-12 h-12 text-gray-700" strokeWidth={2} />,
+                circleColor: "bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600"
               },
               {
                 number: "03",
                 title: "INTEGRACIÓN",
                 description: "Conectamos el bot con tus plataformas en minutos",
-                icon: <Zap className="w-10 h-10 text-orange-500" strokeWidth={2.5} />,
+                icon: <Zap className="w-12 h-12 text-gray-700" strokeWidth={2} />,
+                circleColor: "bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600"
               },
               {
                 number: "04",
                 title: "¡LISTO PARA FUNCIONAR!",
                 description: "Tu asistente IA trabaja 24/7 por ti",
-                icon: <Rocket className="w-10 h-10 text-blue-500" strokeWidth={2.5} />,
+                icon: <Rocket className="w-12 h-12 text-gray-700" strokeWidth={2} />,
+                circleColor: "bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600"
               },
             ].map((step) => (
               <div key={step.number} className="flex flex-col items-center">
-                {/* Círculo con número */}
-                <div className="w-28 h-28 bg-gradient-to-br from-orange-500 via-orange-400 to-blue-600 rounded-full flex items-center justify-center mb-8 shadow-2xl relative z-10">
-                  <span className="text-white text-3xl font-black">{step.number}</span>
+                {/* Círculo con gradiente FORZADO */}
+                <div 
+                  className={`w-32 h-32 mb-8 rounded-full flex items-center justify-center shadow-2xl ${step.circleColor}`}
+                  style={{ background: 'linear-gradient(135deg, #f97316 0%, #fb923c 50%, #3b82f6 100%)' }}
+                >
+                  <span className="text-white text-4xl font-black">{step.number}</span>
                 </div>
                 
-                {/* Card */}
-                <div className="bg-white border-2 border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center text-center w-full max-w-sm">
-                  {/* Icono */}
+                {/* Card blanca */}
+                <div className="bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 flex flex-col items-center text-center w-full">
                   <div className="mb-6">
                     {step.icon}
                   </div>
                   
-                  {/* Título */}
-                  <h3 className="text-lg md:text-xl font-black text-gray-900 tracking-wide mb-4 uppercase">
+                  <h3 className="text-xl font-black text-gray-900 tracking-wide mb-4 uppercase">
                     {step.title}
                   </h3>
                   
-                  {/* Descripción */}
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                  <p className="text-base text-gray-600 leading-relaxed">
                     {step.description}
                   </p>
                 </div>

@@ -5,7 +5,7 @@ import Benefits from "@/components/Benefits";
 import UseCases from "@/components/UseCases";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
-import QuoteFormSection from "@/components/QuoteFormSection";
+import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -20,7 +20,7 @@ const Index = () => {
         <UseCases />
         <Testimonials />
         <FAQ />
-        <QuoteFormSection />
+        <ContactForm />
       </main>
       <Footer />
       <WhatsAppButton />

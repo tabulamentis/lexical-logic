@@ -1,18 +1,16 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
+  plugins: [react()],
   server: {
-    host: "::",
+    host: '0.0.0.0',  // Permite conexiones externas
     port: 8080,
-  },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-}));
+    allowedHosts: [
+      'lexical-web-lexicalweb.n3v9pm.easypanel.host',  // Tu dominio de Easypanel
+      '.easypanel.host',  // Permite todos los subdominios de Easypanel
+      'localhost',
+    ]
+  }
+})

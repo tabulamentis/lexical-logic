@@ -139,7 +139,7 @@ const ContactForm = () => {
                   name="name"
                   type="text"
                   value={formData.name}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   required
                   className="h-14 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200"
                   placeholder="Ej: Juan Pérez"
@@ -153,13 +153,14 @@ const ContactForm = () => {
                   name="email"
                   type="email"
                   value={formData.email}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   required
                   className="h-14 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200"
                   placeholder="tu.email@empresa.com"
                 />
               </div>
 
+              <div className="space-y-3">
                 <Label htmlFor="empresa" className="text-base font-semibold text-[#1F2937]">Empresa</Label>
                 <Input
                   id="empresa"
@@ -190,7 +191,7 @@ const ContactForm = () => {
                   id="message"
                   name="message"
                   value={formData.message}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                   required
                   className="min-h-40 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200 resize-none"
                   placeholder="Cuéntanos sobre tu negocio, qué necesitas automatizar y cómo podemos ayudarte a crecer..."

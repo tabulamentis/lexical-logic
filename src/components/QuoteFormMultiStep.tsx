@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Check, ChevronRight, ChevronLeft, CheckCircle } from "lucide-react";
 
 const steps = [
@@ -13,7 +13,6 @@ const steps = [
 ];
 
 const QuoteFormMultiStep = () => {
-  const { toast } = useToast();
   const formRef = useRef<HTMLDivElement>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,17 +82,12 @@ const QuoteFormMultiStep = () => {
       case 7:
         return !!(formData.casosTransferencia && formData.emailCotizacion);
       default:
-        return true;
     }
   };
 
   const handleNextStep = () => {
     if (!validateStep(currentStep)) {
-      toast({
-        title: "Campos requeridos",
-        description: "Por favor completa todos los campos obligatorios antes de continuar.",
-        variant: "destructive",
-      });
+      toast.error("Campos obligatorios sin completar. Por favor completa todos los campos obligatorios antes de continuar.");
       return;
     }
     setCurrentStep(currentStep + 1);

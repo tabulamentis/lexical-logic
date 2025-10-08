@@ -28,7 +28,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 const quoteSchema = z.object({
@@ -86,7 +86,6 @@ const features = [
 ];
 
 const QuoteForm = () => {
-  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -150,17 +149,14 @@ const QuoteForm = () => {
           whatsappAgente: data.agentWhatsapp,
           emailNotificaciones: data.notificationEmail,
           emailCotizacion: data.clientEmail,
-          fecha: new Date().toISOString(),
           origen: 'Website Lexical Logic - Formulario de Cotización'
         }),
       });
 
       if (response.ok) {
-        toast({
-          title: "¡Cotización enviada con éxito!",
-          description: "Hemos recibido tu solicitud. Te enviaremos una cotización detallada en las próximas 24 horas.",
-          duration: 5000,
-        });
+        toast.success("¡Cotización enviada! Gracias por contactarnos. Te responderemos pronto con una cotización detallada en las próximas 24 horas.", {
+        duration: 5000,
+      });
         
         form.reset();
         setIsOpen(false);
@@ -169,16 +165,11 @@ const QuoteForm = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      toast({
-        title: "Error al enviar",
-        description: "Hubo un problema al enviar tu cotización. Por favor intenta de nuevo.",
-        variant: "destructive",
-      });
+      toast.error("Error al enviar la cotización: Ocurrió un error al enviar la cotización. Por favor, inténtalo de nuevo.");
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
     <section id="cotizacion" className="w-full py-20 px-6 bg-background">
       <div className="max-w-4xl mx-auto">
@@ -191,9 +182,9 @@ const QuoteForm = () => {
             
             <CollapsibleTrigger asChild>
               <Button 
-                variant="hero" 
+                variant="default" 
                 size="lg"
-                className="text-base py-6 h-auto px-12"
+                className="text-base py-6 h-auto px-12 bg-orange-500 hover:bg-orange-600 text-white"
               >
                 {isOpen ? (
                   <>
@@ -705,10 +696,10 @@ const QuoteForm = () => {
 
             <Button 
               type="submit" 
-              variant="hero" 
+              variant="default" 
               size="lg" 
               disabled={isSubmitting}
-              className="w-full text-base py-6 h-auto"
+              className="w-full text-base py-6 h-auto bg-orange-500 hover:bg-orange-600 text-white"
             >
               {isSubmitting ? (
                 <>

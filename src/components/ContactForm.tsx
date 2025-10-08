@@ -3,11 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Loader2, CheckCircle2, Send, ChevronDown, Sparkles } from "lucide-react"; // ✅ Se agregó Sparkles
 
 const ContactForm = () => {
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
@@ -18,17 +17,12 @@ const ContactForm = () => {
     phone: "",
     message: ""
   });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validación básica
     if (!formData.name || !formData.email || !formData.message) {
-      toast({
-        title: "Error",
-        description: "Por favor completa todos los campos requeridos",
-        variant: "destructive",
-      });
+      toast.error("Ocurrió un error al enviar el mensaje. Por favor, inténtalo de nuevo.");
       return;
     }
 
@@ -57,10 +51,7 @@ const ContactForm = () => {
         // Mostrar mensaje de éxito animado
         setShowSuccess(true);
 
-        toast({
-          title: "¡Mensaje enviado!",
-          description: "Gracias por contactarnos. Nos pondremos en contacto contigo pronto.",
-        });
+        toast.success("¡Mensaje enviado! Gracias por contactarnos. Te responderemos pronto.");
 
         // Resetear formulario
         setFormData({
@@ -74,21 +65,16 @@ const ContactForm = () => {
         // Ocultar mensaje de éxito después de 5 segundos
         setTimeout(() => setShowSuccess(false), 5000);
       } else {
-        throw new Error("Error al enviar el formulario");
       }
     } catch (error) {
       console.error("Error:", error);
-      toast({
-        title: "Error al enviar",
-        description: "Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo o contáctanos por WhatsApp.",
-        variant: "destructive",
-      });
+      toast.error("Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo o contáctanos por WhatsApp.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -174,15 +160,14 @@ const ContactForm = () => {
                 />
               </div>
 
-              <div className="space-y-3">
                 <Label htmlFor="empresa" className="text-base font-semibold text-[#1F2937]">Empresa</Label>
                 <Input
                   id="empresa"
                   name="empresa"
                   type="text"
                   value={formData.empresa}
-                  onChange={handleChange}
-                  className="h-14 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200"
+                  onChange={handleInputChange}
+                  className="w-full h-14 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200"
                   placeholder="Nombre de tu empresa"
                 />
               </div>
@@ -194,14 +179,13 @@ const ContactForm = () => {
                   name="phone"
                   type="tel"
                   value={formData.phone}
-                  onChange={handleChange}
-                  className="h-14 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200"
+                  onChange={handleInputChange}
+                  className="w-full h-14 text-base py-4 px-6 border-2 border-gray-200 focus:border-[#F97316] focus:ring-2 focus:ring-[#F97316]/20 transition-all duration-200"
                   placeholder="+58 412 123 4567"
                 />
               </div>
 
               <div className="space-y-3">
-                <Label htmlFor="message" className="text-base font-semibold text-[#1F2937]">Mensaje *</Label>
                 <Textarea
                   id="message"
                   name="message"

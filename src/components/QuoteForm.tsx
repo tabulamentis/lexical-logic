@@ -57,6 +57,13 @@ const quoteSchema = z.object({
     question: z.string().min(1, "La pregunta es obligatoria"),
     answer: z.string().min(10, "La respuesta debe tener al menos 10 caracteres"),
   })).optional().default([]),
+  featureFaqs: z.array(z.object({
+    feature: z.string().min(1, "La funcionalidad es obligatoria"),
+    questions: z.array(z.object({
+      question: z.string().min(1, "La pregunta es obligatoria"),
+      answer: z.string().min(10, "La respuesta debe tener al menos 10 caracteres"),
+    })).optional().default([]),
+  })).optional().default([]),
 });
 
 type QuoteFormData = z.infer<typeof quoteSchema>;
@@ -118,6 +125,7 @@ const QuoteForm = () => {
       notificationEmail: "",
       clientEmail: "",
       faqs: [],
+      featureFaqs: [],
     },
   });
 
@@ -155,6 +163,7 @@ const QuoteForm = () => {
           emailNotificaciones: data.notificationEmail,
           emailCotizacion: data.clientEmail,
           preguntasFrecuentes: data.faqs,
+          preguntasFrecuentesPorFuncionalidad: data.featureFaqs,
           origen: 'Website Lexical Logic - Formulario de Cotización'
         }),
       });
@@ -486,30 +495,163 @@ const QuoteForm = () => {
                 render={() => (
                   <FormItem>
                     <FormLabel>Funcionalidades deseadas *</FormLabel>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {features.map((feature) => (
-                        <FormField
-                          key={feature.id}
-                          control={form.control}
-                          name="features"
-                          render={({ field }) => (
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(feature.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...field.value, feature.id])
-                                      : field.onChange(field.value?.filter((value) => value !== feature.id));
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="font-normal cursor-pointer">
-                                {feature.label}
-                              </FormLabel>
-                            </FormItem>
+                        <div key={feature.id} className="space-y-2">
+                          <FormField
+                            control={form.control}
+                            name="features"
+                            render={({ field }) => (
+                              <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(feature.id)}
+                                    onCheckedChange={(checked) => {
+                                      const newFeatures = checked
+                                        ? [...field.value, feature.id]
+                                        : field.value?.filter((value) => value !== feature.id);
+
+                                      field.onChange(newFeatures);
+
+                                      // Si se deselecciona una funcionalidad, eliminar sus preguntas frecuentes específicas
+                                      if (!checked) {
+                                        const currentFeatureFaqs = form.getValues("featureFaqs");
+                                        const updatedFeatureFaqs = currentFeatureFaqs.filter(ff => ff.feature !== feature.id);
+                                        form.setValue("featureFaqs", updatedFeatureFaqs);
+                                      }
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal cursor-pointer">
+                                  {feature.label}
+                                </FormLabel>
+                              </FormItem>
+                            )}
+                          />
+
+                          {/* Mostrar campos adicionales para preguntas frecuentes específicas cuando se selecciona "Responder FAQ" */}
+                          {feature.id === "faq" && form.watch("features").includes("faq") && (
+                            <div className="ml-6 p-4 bg-orange-50 border-l-4 border-orange-200 rounded-r-lg">
+                              <h4 className="text-sm font-semibold text-orange-800 mb-3">
+                                Preguntas frecuentes específicas para esta funcionalidad:
+                              </h4>
+
+                              <FormField
+                                control={form.control}
+                                name="featureFaqs"
+                                render={() => (
+                                  <FormItem>
+                                    <div className="space-y-3">
+                                      {(() => {
+                                        const currentFeatureFaqs = form.watch("featureFaqs");
+                                        const faqFeatureIndex = currentFeatureFaqs.findIndex(ff => ff.feature === "faq");
+
+                                        if (faqFeatureIndex === -1) {
+                                          // Crear entrada inicial para preguntas frecuentes de FAQ
+                                          setTimeout(() => {
+                                            form.setValue("featureFaqs", [
+                                              ...currentFeatureFaqs,
+                                              { feature: "faq", questions: [] }
+                                            ]);
+                                          }, 0);
+                                        }
+
+                                        return (
+                                          <div className="space-y-3">
+                                            {form.watch("featureFaqs")
+                                              .filter(ff => ff.feature === "faq")
+                                              .map((featureFaq, featureIndex) => (
+                                                <div key={featureIndex} className="space-y-3">
+                                                  {form.watch(`featureFaqs.${featureIndex}.questions`)?.map((_, questionIndex) => (
+                                                    <div key={questionIndex} className="p-3 border rounded-lg bg-white space-y-3">
+                                                      <div className="flex justify-between items-center">
+                                                        <h5 className="text-sm font-medium">Pregunta #{questionIndex + 1}</h5>
+                                                        <Button
+                                                          type="button"
+                                                          variant="outline"
+                                                          size="sm"
+                                                          onClick={() => {
+                                                            const currentFeatureFaqs = form.getValues("featureFaqs");
+                                                            const faqFeature = currentFeatureFaqs.find(ff => ff.feature === "faq");
+                                                            if (faqFeature) {
+                                                              faqFeature.questions = faqFeature.questions.filter((_, i) => i !== questionIndex);
+                                                              form.setValue("featureFaqs", currentFeatureFaqs);
+                                                            }
+                                                          }}
+                                                        >
+                                                          Eliminar
+                                                        </Button>
+                                                      </div>
+
+                                                      <FormField
+                                                        control={form.control}
+                                                        name={`featureFaqs.${featureIndex}.questions.${questionIndex}.question`}
+                                                        render={({ field }) => (
+                                                          <FormItem>
+                                                            <FormLabel className="text-sm">Pregunta *</FormLabel>
+                                                            <FormControl>
+                                                              <Input
+                                                                placeholder="Ej: ¿Cómo puedo hacer un pedido?"
+                                                                {...field}
+                                                              />
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                          </FormItem>
+                                                        )}
+                                                      />
+
+                                                      <FormField
+                                                        control={form.control}
+                                                        name={`featureFaqs.${featureIndex}.questions.${questionIndex}.answer`}
+                                                        render={({ field }) => (
+                                                          <FormItem>
+                                                            <FormLabel className="text-sm">Respuesta *</FormLabel>
+                                                            <FormControl>
+                                                              <Textarea
+                                                                placeholder="Ej: Puedes hacer tu pedido directamente a través de nuestro WhatsApp..."
+                                                                className="min-h-16"
+                                                                {...field}
+                                                              />
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                          </FormItem>
+                                                        )}
+                                                      />
+                                                    </div>
+                                                  ))}
+
+                                                  <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => {
+                                                      const currentFeatureFaqs = form.getValues("featureFaqs");
+                                                      const faqFeature = currentFeatureFaqs.find(ff => ff.feature === "faq");
+                                                      if (faqFeature) {
+                                                        faqFeature.questions = [
+                                                          ...faqFeature.questions,
+                                                          { question: "", answer: "" }
+                                                        ];
+                                                        form.setValue("featureFaqs", currentFeatureFaqs);
+                                                      }
+                                                    }}
+                                                    className="w-full"
+                                                  >
+                                                    + Agregar Pregunta Específica
+                                                  </Button>
+                                                </div>
+                                              ))}
+                                          </div>
+                                        );
+                                      })()}
+                                    </div>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
                           )}
-                        />
+                        </div>
                       ))}
                     </div>
                     <FormMessage />

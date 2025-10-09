@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -53,6 +53,10 @@ const quoteSchema = z.object({
   agentWhatsapp: z.string().optional(),
   notificationEmail: z.string().email("Email inválido").optional().or(z.literal("")),
   clientEmail: z.string().email("Email inválido para recibir la cotización"),
+  faqs: z.array(z.object({
+    question: z.string().min(1, "La pregunta es obligatoria"),
+    answer: z.string().min(10, "La respuesta debe tener al menos 10 caracteres"),
+  })).optional().default([]),
 });
 
 type QuoteFormData = z.infer<typeof quoteSchema>;
@@ -113,6 +117,7 @@ const QuoteForm = () => {
       agentWhatsapp: "",
       notificationEmail: "",
       clientEmail: "",
+      faqs: [],
     },
   });
 
@@ -149,6 +154,7 @@ const QuoteForm = () => {
           whatsappAgente: data.agentWhatsapp,
           emailNotificaciones: data.notificationEmail,
           emailCotizacion: data.clientEmail,
+          preguntasFrecuentes: data.faqs,
           origen: 'Website Lexical Logic - Formulario de Cotización'
         }),
       });
@@ -638,6 +644,91 @@ const QuoteForm = () => {
                         {...field}
                       />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Preguntas Frecuentes */}
+            <div className="space-y-6">
+              <h3 className="text-2xl font-semibold border-b pb-2">Preguntas Frecuentes (opcional)</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Agrega preguntas frecuentes que quieres que el chatbot responda automáticamente. Esto nos ayuda a entender mejor las necesidades específicas de tu negocio.
+              </p>
+
+              <FormField
+                control={form.control}
+                name="faqs"
+                render={() => (
+                  <FormItem>
+                    <div className="space-y-4">
+                      {form.watch("faqs").map((_, index) => (
+                        <div key={index} className="p-4 border rounded-lg space-y-4">
+                          <div className="flex justify-between items-center">
+                            <h4 className="text-lg font-medium">Pregunta #{index + 1}</h4>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const currentFaqs = form.getValues("faqs");
+                                form.setValue("faqs", currentFaqs.filter((_, i) => i !== index));
+                              }}
+                            >
+                              Eliminar
+                            </Button>
+                          </div>
+
+                          <FormField
+                            control={form.control}
+                            name={`faqs.${index}.question`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Pregunta *</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Ej: ¿Cuáles son sus horarios de atención?"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name={`faqs.${index}.answer`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Respuesta *</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    placeholder="Ej: Nuestro horario de atención es de lunes a viernes de 9:00 AM a 6:00 PM..."
+                                    className="min-h-20"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      ))}
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          const currentFaqs = form.getValues("faqs");
+                          form.setValue("faqs", [...currentFaqs, { question: "", answer: "" }]);
+                        }}
+                        className="w-full"
+                      >
+                        + Agregar Pregunta Frecuente
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}

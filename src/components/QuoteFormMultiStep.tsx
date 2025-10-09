@@ -43,8 +43,12 @@ const QuoteFormMultiStep = () => {
     // Paso 4
     tipoChatbot: [] as string[],
     productosServicios: '',
-    faqPregunta1: '',
-    faqRespuesta1: '',
+    faqs: [
+      {
+        pregunta: '',
+        respuesta: ''
+      }
+    ],
     precios: '',
     manejaPromociones: '',
     detallePromociones: '',
@@ -74,7 +78,7 @@ const QuoteFormMultiStep = () => {
       case 3:
         return !!(formData.nombreChatbot && formData.idiomaPrincipal && formData.mensajeBienvenida);
       case 4:
-        return formData.tipoChatbot.length > 0;
+        return formData.tipoChatbot.length > 0 && formData.faqs.some(faq => faq.pregunta.trim() !== '' && faq.respuesta.trim() !== '');
       case 5:
         return true; // Opcional
       case 6:
@@ -170,13 +174,37 @@ const QuoteFormMultiStep = () => {
     }
   };
 
+  const addFaq = () => {
+    setFormData({
+      ...formData,
+      faqs: [...formData.faqs, { pregunta: '', respuesta: '' }]
+    });
+  };
+
+  const removeFaq = (index: number) => {
+    if (formData.faqs.length > 1) {
+      setFormData({
+        ...formData,
+        faqs: formData.faqs.filter((_, i) => i !== index)
+      });
+    }
+  };
+
+  const updateFaq = (index: number, field: 'pregunta' | 'respuesta', value: string) => {
+    const updatedFaqs = formData.faqs.map((faq, i) =>
+      i === index ? { ...faq, [field]: value } : faq
+    );
+    setFormData({
+      ...formData,
+      faqs: updatedFaqs
+    });
+  };
+
   const toggleArrayItem = (array: string[], item: string) => {
     return array.includes(item)
       ? array.filter(i => i !== item)
       : [...array, item];
   };
-
-  // Pantalla de éxito
   if (submitStatus === 'success') {
     return (
       <div className="min-h-screen bg-gray-50 py-16 px-4">
@@ -524,42 +552,77 @@ const QuoteFormMultiStep = () => {
               />
             </div>
             
-            {/* Sección FAQ */}
+            {/* Sección FAQ Dinámica */}
             <div className="mt-8 p-6 bg-purple-50 border-l-4 border-purple-500 rounded-lg">
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">Responder FAQ (Preguntas Frecuentes)</h4>
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-lg font-semibold text-gray-900">Responder FAQ (Preguntas Frecuentes)</h4>
+                <button
+                  type="button"
+                  onClick={addFaq}
+                  className="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white text-sm rounded-lg hover:bg-purple-700 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                  Agregar Pregunta
+                </button>
+              </div>
+
               <div className="flex items-start gap-2 mb-4">
                 <span className="text-2xl">💡</span>
                 <p className="text-sm text-gray-600">
                   <strong>Consejo:</strong> Agregue las preguntas exactamente como las hacen sus clientes. Mientras más específicas sean las respuestas, mejor será la experiencia del usuario.
                 </p>
               </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-2">
-                    Pregunta 1 *
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.faqPregunta1}
-                    onChange={(e) => setFormData({...formData, faqPregunta1: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 placeholder:text-gray-500 text-gray-900 focus:outline-none"
-                    placeholder="Ej: ¿Cuáles son sus horarios de atención?"
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-gray-700 block mb-2">
-                    Respuesta ⓘ
-                  </label>
-                  <textarea
-                    value={formData.faqRespuesta1}
-                    onChange={(e) => setFormData({...formData, faqRespuesta1: e.target.value})}
-                    rows={3}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 placeholder:text-gray-500 text-gray-900 focus:outline-none"
-                    placeholder="Ej: Nuestros horarios son de Lunes a Viernes de 9:00 AM a 6:00 PM, y Sábados de 9:00 AM a 2:00 PM."
-                  />
-                </div>
+
+              <div className="space-y-6">
+                {formData.faqs.map((faq, index) => (
+                  <div key={index} className="p-4 border border-purple-200 rounded-lg bg-white">
+                    <div className="flex justify-between items-start mb-3">
+                      <h5 className="text-sm font-medium text-gray-700">Pregunta {index + 1}</h5>
+                      {formData.faqs.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeFaq(index)}
+                          className="text-red-500 hover:text-red-700 p-1"
+                          title="Eliminar pregunta"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 block mb-2">
+                          Pregunta *
+                        </label>
+                        <input
+                          type="text"
+                          value={faq.pregunta}
+                          onChange={(e) => updateFaq(index, 'pregunta', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 placeholder:text-gray-500 text-gray-900 focus:outline-none"
+                          placeholder="Ej: ¿Cuáles son sus horarios de atención?"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 block mb-2">
+                          Respuesta *
+                        </label>
+                        <textarea
+                          value={faq.respuesta}
+                          onChange={(e) => updateFaq(index, 'respuesta', e.target.value)}
+                          rows={3}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 placeholder:text-gray-500 text-gray-900 focus:outline-none"
+                          placeholder="Ej: Nuestros horarios son de Lunes a Viernes de 9:00 AM a 6:00 PM, y Sábados de 9:00 AM a 2:00 PM."
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
             
